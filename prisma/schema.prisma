@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database/database.sqlite"
+}
+
+model User {
+  userId String @id @default(uuid())
+  userPassword String @unique
+  userName String
+  userAbout String
+  userDiscordId String
+  userCampaignAcess String
+
+  characters CharacterSheet[]
+}
+
+model CharacterSheet {
+  characterId String @id @default(uuid())
+  characterName String
+  characterIcon String
+  characterLvL Int
+  characterXp Int
+  characterDisadvantages String
+  characterAdvantages String
+  character User @relation(fields: [characterId], references: [userId])
+	// characterDescriptions CharacterDescription[] 
+	// characterRace String  
+	// characterClass String
+	// items CharacterItems[] 
+	// charCampaing Campaing[]
+}
+
+// model Campaing {
+// 	campaingName String
+// 	campaingType String
+// 	campaingMaster DungeonMaster[]
+// }
+
+// model CharacterDescription {
+//	
+//}
+
+// model DungeonMaster {
+// 
+// }
+
+// model CharacterItems {
+// 	itemName String
+// 	itemDescription String
+// }
+
+
+
+
+
+
+// CharacterStats {
+
+//  string characterHp: ,
+//  number characterXp: ,
+//  number characterLvl: ,
+//  string characterName: ,
+//  string characterRace: ,
+//  string characterClass: ,
+//  string characterTitle: ,
+//  string (img) characterIcon: ,
+//  string characterBorder: ,
+//  string characterOccupation: ,
+//  string characterHistory: ,
+//  string charaterAlign: ,
+//  string characterArmor: ,
+//  string characterWalking: ,
+//  string[array] characterDefenses/characterConditions: ,
+//  string[array] characterAdvantages/characterDisadvantages: ,
+
+// }
