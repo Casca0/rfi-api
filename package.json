@@ -1,34 +1,39 @@
 {
-  "name": "rfi-api",
-  "version": "1.0.0",
-  "description": "mkdir rpg-back-end",
-  "main": "server/index.ts",
-  "scripts": {
+	"name": "rfi-api",
+	"version": "1.0.0",
+	"description": "API for RPG App",
+	"main": "src/server/index.ts",
+	"scripts": {
+		"build-db": "npx prisma migrate dev --name database init",
+		"prisma-dash": "npx prisma studio",
 		"prestart": "eslint . --ext .ts",
-    "start": "ts-node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Casca0/rfi-api.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Casca0/rfi-api/issues"
-  },
-  "homepage": "https://github.com/Casca0/rfi-api#readme",
-  "devDependencies": {
-    "@types/node": "^18.11.9",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
-    "eslint": "^8.28.0",
-    "prisma": "^4.7.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^4.9.3"
-  },
-  "dependencies": {
-    "@prisma/client": "^4.7.0"
-  }
+		"start": "ts-node .",
+		"dev": "nodemon --exec npm start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Casca0/rfi-api.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Casca0/rfi-api/issues"
+	},
+	"homepage": "https://github.com/Casca0/rfi-api#readme",
+	"devDependencies": {
+		"@types/express": "^4.17.14",
+		"@types/node": "^18.11.9",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"eslint": "^8.28.0",
+		"nodemon": "^2.0.20",
+		"prettier-plugin-prisma": "^4.4.0",
+		"prisma": "^4.7.0"
+	},
+	"dependencies": {
+		"@prisma/client": "^4.7.0",
+		"typescript": "^4.9.3",
+		"express": "^4.18.2"
+	}
 }

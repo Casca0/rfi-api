@@ -7,77 +7,153 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./database/database.sqlite"
+  url      = "file:../database/database.sqlite"
 }
 
 model User {
-  userId String @id @default(uuid())
-  userPassword String @unique
-  userName String
-  userAbout String
-  userDiscordId String
-  userCampaignAcess String
+  userId             String   @id @default(uuid())
+  userPassword       String   @unique
+  userName           String   @unique
+  userAbout          String
+  userDiscord        String   @unique
+  userCampaignAccess Int
+  userBorderIcon     String
+  userCreatedAt      DateTime @default(now())
 
   characters CharacterSheet[]
 }
 
 model CharacterSheet {
-  characterId String @id @default(uuid())
-  characterName String
-  characterIcon String
-  characterLvL Int
-  characterXp Int
-  characterDisadvantages String
-  characterAdvantages String
-  character User @relation(fields: [characterId], references: [userId])
-	// characterDescriptions CharacterDescription[] 
-	// characterRace String  
-	// characterClass String
-	// items CharacterItems[] 
-	// charCampaing Campaing[]
+  characterId        String   @id @default(uuid())
+  characterOwner     String
+  characterCreatedAt DateTime @default(now())
+  characterName      String
+  characterIcon      String
+  characterLvL       Int
+  characterXp        Int
+  character          User     @relation(fields: [characterOwner], references: [userId])
+
+  characterDescriptions CharacterDescription[]
+  characterItems        CharacterItem[]
+  characterAttributes   CharacterAttribute[]
+  characterExpertises   CharacterExpertise[]
+  characterTechniques   CharacterTechnique[]
+  // characterRace String  
+  // characterClass String
+  // items CharacterItems[] 
+  // charCampaing Campaing[]
 }
 
-// model Campaing {
-// 	campaingName String
-// 	campaingType String
-// 	campaingMaster DungeonMaster[]
-// }
+model CharacterDescription {
+  descriptionId          String @id @default(uuid())
+  descriptionOwner       String @unique
+  characterRace          String
+  characterClass         String
+  characterTitle         String
+  characterOccupation    String
+  characterHistory       String
+  characterAlign         Int
+  characterArmor         Int
+  characterWalking       Float
+  characterDisadvantages String //array
+  characterAdvantages    String //array
 
-// model CharacterDescription {
-//	
-//}
+  character CharacterSheet @relation(fields: [descriptionOwner], references: [characterId])
+}
 
-// model DungeonMaster {
-// 
-// }
+model CharacterItem {
+  itemId             String  @id @default(uuid())
+  itemOwner          String
+  itemName           String
+  itemDescription    String
+  itemOrigin         String?
+  itemMagicOrigin    String?
+  itemWeight         Float
+  itemSize           Float
+  itemType           String?
+  itemEffect         String //exemplo dano elemental ou sangramento etc
+  itemArmor          Int?
+  itemDmg            Float
+  itemRange          Float
+  itemPierce         Float?
+  itemDurability     Float?
+  itemAmmo           Int?
+  itemRechargeTime   Float?
+  itemSpecialAttacks String?
 
-// model CharacterItems {
-// 	itemName String
-// 	itemDescription String
-// }
+  character CharacterSheet @relation(fields: [itemOwner], references: [characterId])
+}
 
+model CharacterAttribute {
+  attributtesId           String @id @default(uuid())
+  attributeCharacterOwner String @unique
+  str                     Int
+  dex                     Int
+  const                   Int
+  int                     Int
+  wis                     Int
+  cha                     Int
 
+  character CharacterSheet @relation(fields: [attributeCharacterOwner], references: [characterId])
+}
 
+model CharacterExpertise {
+  expertiseId             String @id @default(uuid())
+  expertiseCharacterOwner String @unique
+  religion                Int
+  lucky                   Int
+  acrobatics              Int
+  arcana                  Int
+  athletics               Int
+  history                 Int
+  insight                 Int
+  intimidation            Int
+  medicine                Int
+  nature                  Int
+  perception              Int
+  persuasion              Int
+  sleightHand             Int
+  stealth                 Int
+  survival                Int
 
+  character CharacterSheet @relation(fields: [expertiseCharacterOwner], references: [characterId])
+}
 
+model CharacterTechnique {
+  techniqueId             String @id @default(uuid())
+  techniqueCharacterOwner String @unique
+  artillery               Int
+  block                   Int
+  duel                    Int
+  evasion                 Int
+  furtivity               Int
+  mind                    Int
+  thievery                Int
 
-// CharacterStats {
+  character CharacterSheet @relation(fields: [techniqueCharacterOwner], references: [characterId])
+}
 
-//  string characterHp: ,
-//  number characterXp: ,
-//  number characterLvl: ,
-//  string characterName: ,
-//  string characterRace: ,
-//  string characterClass: ,
-//  string characterTitle: ,
-//  string (img) characterIcon: ,
-//  string characterBorder: ,
-//  string characterOccupation: ,
-//  string characterHistory: ,
-//  string charaterAlign: ,
-//  string characterArmor: ,
-//  string characterWalking: ,
-//  string[array] characterDefenses/characterConditions: ,
-//  string[array] characterAdvantages/characterDisadvantages: ,
+model Master {
+  masterId      String @id @default(uuid())
+  masterAbout   String
+  masterIcon    String
+  masterBorder  String
+  masterDiscord String @unique
 
-// }
+  masterCampaigns MasterCampaign[]
+}
+
+model MasterCampaign {
+  campaignId                        String  @id @default(uuid())
+  campaignOwner                     String
+  campaingName                      String
+  campaingType                      String
+  campaignHistory                   String
+  campaignBestiary                  String?
+  campaignNotes                     String?
+  campaignRecomendations            String?
+  campaignXpPerLevel                Int
+  campaignProficiencePointsPerLevel Int
+
+  campaignMaster Master @relation(fields: [campaignOwner], references: [masterId])
+}
